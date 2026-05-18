@@ -47,14 +47,15 @@ public:
 	{
 		RealType       sum             = 0.0;
 		const SizeType totalMatsubaras = gammaG_.totalMatsubaras();
-		for (SizeType i = 0; i < totalMatsubaras; ++i) {
+		for (SizeType i = 0; i < totalMatsubaras / 2; ++i) {
 			const ComplexOrRealType iwn(0, gammaG_.omega(i));
 			const ComplexOrRealType val
 			    = anderson_function.anderson(args, iwn) - gammaG_(i);
-			sum += PsimagLite::real(val * PsimagLite::conj(val));
+			RealType weight = std::fabs(1.0 / gammaG_.omega(i));
+			sum += weight * PsimagLite::real(val * PsimagLite::conj(val));
 		}
 
-		return sum / totalMatsubaras;
+		return sum;
 	}
 
 	// For each 0 <= j < 2*nBath, this function
@@ -70,7 +71,8 @@ public:
 
 		for (SizeType j = 0; j < n; ++j) {
 			RealType sum = 0.0;
-			for (SizeType i = 0; i < totalMatsubaras; ++i) {
+			for (SizeType i = 0; i < totalMatsubaras / 2; ++i) {
+				RealType                weight = std::fabs(1.0 / gammaG_.omega(i));
 				const ComplexOrRealType iwn(0, gammaG_.omega(i));
 				const ComplexOrRealType val
 				    = anderson_function.anderson(src, iwn) - gammaG_(i);
@@ -78,11 +80,12 @@ public:
 				const ComplexOrRealType valPrime
 				    = anderson_function.andersonPrime(src, iwn, j);
 
-				sum += PsimagLite::real(val * PsimagLite::conj(valPrime)
-				                        + valPrime * PsimagLite::conj(val));
+				sum += weight
+				    * PsimagLite::real(val * PsimagLite::conj(valPrime)
+				                       + valPrime * PsimagLite::conj(val));
 			}
 
-			dest[j] = sum / totalMatsubaras;
+			dest[j] = sum;
 		}
 	}
 

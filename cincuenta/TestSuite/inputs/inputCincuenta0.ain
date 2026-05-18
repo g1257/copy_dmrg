@@ -1,6 +1,6 @@
 ##Ainur1.0
 
-FicticiousBeta=50;
+FicticiousBeta=20;
 # Because we're using U nup ndown
 # the mu should be -0.5*U
 ChemicalPotential=0.;
@@ -15,7 +15,7 @@ DmftTolerance=0.001;
 ImpuritySolver="exactdiag";
 
 #FitMethod=simplex;
-FitOptions=particleholesymmetric;
+#FitOptions=particleholesymmetric;
 MinParamsDelta=0.1;
 MinParamsMaxIter=10000;
 MinParamsDelta2=0.01;
